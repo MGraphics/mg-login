@@ -57,7 +57,7 @@ The repository must stay **public**, otherwise sites cannot read the releases wi
 ```sh
 bin/dev-setup.sh                         # WordPress 7.1 (pl_PL) + MariaDB in Docker, http://127.0.0.1:8486
 composer install && vendor/bin/phpunit   # unit tests
-bin/build.sh                             # build/mg-login-<v>.zip and build/mg-login-<v>-wporg.zip
+bin/build.sh                             # build/mg-login-<v>.zip and build/mg-login-<v>-wporg.zip, then an update check on the GitHub zip (tests/release/update-check.php)
 bin/i18n.sh                              # .pot, Polish .po/.mo
 ```
 

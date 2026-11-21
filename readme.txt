@@ -4,7 +4,7 @@ Tags: login, custom login, login page, branding, login logo
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,12 +76,18 @@ No. The GitHub build looks for new versions in the Releases of the public reposi
 
 == Changelog ==
 
+= 1.0.1 =
+* Fixed: "Check for updates" stopped with a fatal error (Class "Parsedown" not found) when a GitHub release had release notes. The release package now contains the complete update checker, including its Markdown and readme parsers; every build checks this.
+
 = 1.0.0 =
 * Published on GitHub: updates come from the GitHub Releases of github.com/MGraphics/mg-login (release asset mg-login-1.0.0.zip).
 * The default background is a pure CSS design in the MGraphics look; any photo can be chosen from the media library.
 * First release: branded login, lost-password, reset, registration and message screens; language switcher under the form; settings for logo, link, title, heading, colours, background, card position, language switcher and custom CSS; bundled Open Sans font; Polish translation.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Fixes the fatal error when checking for updates. Install this package by hand once (Plugins → Add New Plugin → Upload Plugin), because 1.0.0 cannot update itself.
 
 = 1.0.0 =
 First release.

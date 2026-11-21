@@ -3,7 +3,7 @@
  * Plugin Name:       MG Login
  * Plugin URI:        https://github.com/MGraphics/mg-login
  * Description:       A branded login screen: your logo, colours and background on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            MGraphics
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MG_LOGIN_VERSION', '1.0.0' );
+define( 'MG_LOGIN_VERSION', '1.0.1' );
 define( 'MG_LOGIN_FILE', __FILE__ );
 define( 'MG_LOGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MG_LOGIN_URL', plugin_dir_url( __FILE__ ) );

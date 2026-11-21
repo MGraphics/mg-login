@@ -2,6 +2,7 @@
 # Builds the release packages into build/:
 #   mg-login-<version>.zip         GitHub release asset (with the update checker, Update URI header)
 #   mg-login-<version>-wporg.zip   WordPress.org (no update checker, no Update URI)
+# The GitHub package is unpacked and checked with tests/release/update-check.php.
 # Both unpack to a folder named mg-login/.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -31,5 +32,12 @@ fi
 
 ( cd "$OUT/github" && zip -qr "../mg-login-$VERSION.zip" mg-login )
 ( cd "$OUT/wporg" && zip -qr "../mg-login-$VERSION-wporg.zip" mg-login )
+
+# The GitHub package must carry the whole update checker (lib/plugin-update-checker/vendor:
+# Parsedown, readme parser): unpack it and run an update check against a release fixture.
+CHECK="$(mktemp -d)"
+trap 'rm -rf "$CHECK"' EXIT
+unzip -q "$OUT/mg-login-$VERSION.zip" -d "$CHECK"
+php "$ROOT/tests/release/update-check.php" "$CHECK/mg-login"
 echo "$OUT/mg-login-$VERSION.zip"
 echo "$OUT/mg-login-$VERSION-wporg.zip"
