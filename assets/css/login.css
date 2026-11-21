@@ -1,0 +1,633 @@
+/* =============================================================
+   MG Login — branded WordPress login screen
+   Visual reskin only. Sign-in, lost password, remember me,
+   redirects and messages are left to WordPress.
+   Site settings arrive as custom properties on body.mgl-login
+   (inline style printed after this file); the values below are
+   the defaults (the MGraphics look).
+   ============================================================= */
+
+/* ---------- Font (Open Sans, SIL OFL 1.1 — see ../fonts/OFL.txt) ---------- */
+/* One variable font file per subset, declared for the weights 300, 400 and 600
+   only (bold text uses 600), exactly as the original Google Fonts stylesheet. */
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'MG Login Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url('../fonts/open-sans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Tokens ---------- */
+body.login {
+    --mgl-accent:           #2563eb;
+    --mgl-accent-dark:      #1d4ed8;
+    --mgl-accent-ring:      rgba(37, 99, 235, 0.14);
+    --mgl-accent-shadow:    rgba(37, 99, 235, 0.3);
+    --mgl-accent-shadow-hi: rgba(37, 99, 235, 0.38);
+    --mgl-bg-color:         #ece8e3;
+    --mgl-bg-image:         none;
+    --mgl-logo-image:       none;
+    --mgl-logo-w:           306px;
+    --mgl-logo-h:           77px;
+    --mgl-logo-w-sm:        224px;
+    --mgl-logo-h-sm:        56px;
+    --mgl-heading:          'Logowanie';
+    --mgl-card-align:       flex-start;
+    --mgl-overlay:          block;
+    --mgl-ink:              #1f2933;
+    --mgl-muted:            #8a94a6;
+    --mgl-field-bg:         #f4f6f8;
+    --mgl-field-border:     #dfe3e8;
+    --mgl-card-radius:      14px;
+}
+
+/* ---------- Page / background photo ---------- */
+/* One column: the card (with the language switcher inside it) is
+   centred vertically and placed left / centre / right by setting. */
+body.login {
+    font-family: 'MG Login Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 300;
+    color: var(--mgl-ink);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: var(--mgl-bg-color);
+    background-image: var(--mgl-bg-image);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: var(--mgl-card-align);
+    box-sizing: border-box;
+    padding: 6vh 9vw;
+}
+
+/* Very light wash to seat the white card and the logo on a bright photo. */
+body.login::before {
+    content: '';
+    display: var(--mgl-overlay);
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(30, 34, 40, 0.04) 0%, rgba(30, 34, 40, 0.14) 100%);
+    z-index: 0;
+}
+
+/* ---------- Card ---------- */
+body.login #login {
+    position: relative;
+    z-index: 1;
+    width: 360px;
+    max-width: 100%;
+    margin: 0;
+    padding: 40px 40px 32px;
+    background: #ffffff;
+    border-radius: var(--mgl-card-radius);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+    box-sizing: border-box;
+}
+
+/* ---------- Logo — sits ABOVE the card on the transparent page ---------- */
+body.login h1 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(-1 * (var(--mgl-logo-h) + 27px));
+    margin: 0;
+}
+
+body.login h1 a {
+    display: block;
+    width: var(--mgl-logo-w);
+    height: var(--mgl-logo-h);
+    max-width: 100%;
+    margin: 0 auto;
+    background-image: var(--mgl-logo-image);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    text-indent: -9999px;
+    overflow: hidden;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    /* gentle lift off the bright photo */
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+/* No logo: keep the link for screen readers only. */
+body.login.mgl-login.mgl-no-logo #login > h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------- Heading ("Logowanie") — left aligned, plain text ---------- */
+body.login-action-login #login::before {
+    content: var(--mgl-heading);
+    display: block;
+    text-align: left;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--mgl-ink);
+    margin-bottom: 22px;
+}
+
+/* ---------- Form container — strip WP chrome ---------- */
+.login form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    overflow: visible;
+}
+
+/* Visually hide the username / password labels — icons + placeholders
+   stand in for them. Kept in the DOM for screen readers. The
+   "Remember Me" label is deliberately left visible. */
+#loginform label[for="user_login"],
+#loginform label[for="user_pass"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Core "Remember Me" help toggletip — hidden for the clean look;
+   the checkbox itself keeps its normal behaviour. */
+#loginform .forgetmenot .wp-tooltip {
+    display: none;
+}
+
+/* Field rows — relative so the icon can be pinned inside */
+#loginform > p:first-of-type,
+#loginform .user-login-wrap,
+#loginform .user-pass-wrap {
+    position: relative;
+    margin: 0 0 16px;
+}
+
+/* Icon prefixes — inline SVG, never glyph fonts */
+#loginform > p:first-of-type::before,
+#loginform .user-login-wrap::before,
+#loginform .user-pass-wrap::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 13px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* user / person icon */
+#loginform > p:first-of-type::before,
+#loginform .user-login-wrap::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238a94a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2'/%3E%3C/svg%3E");
+}
+
+/* padlock icon */
+#loginform .user-pass-wrap::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238a94a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
+}
+
+/* ---------- Inputs ---------- */
+.login #loginform input[type="text"],
+.login #loginform input[type="password"],
+.login #loginform input[type="email"],
+.login .input {
+    width: 100%;
+    height: 46px;
+    margin: 0;
+    padding: 0 42px 0 44px;
+    border: 1px solid var(--mgl-field-border);
+    border-radius: 9px;
+    background: var(--mgl-field-bg);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--mgl-ink);
+    line-height: 46px;
+    box-sizing: border-box;
+    box-shadow: none;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.login #loginform input[type="text"]:focus,
+.login #loginform input[type="password"]:focus,
+.login #loginform input[type="email"]:focus,
+.login .input:focus {
+    border-color: var(--mgl-accent);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px var(--mgl-accent-ring);
+}
+
+.login #loginform input::placeholder {
+    color: var(--mgl-muted);
+    opacity: 1;
+}
+
+/* Password field wrapper + core "show password" toggle */
+.login .wp-pwd {
+    position: relative;
+}
+
+.login .wp-pwd button.wp-hide-pw {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    height: 46px;
+    width: 40px;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--mgl-muted);
+    cursor: pointer;
+}
+
+.login .wp-pwd button.wp-hide-pw:hover {
+    color: var(--mgl-ink);
+}
+
+.login .wp-pwd button.wp-hide-pw .dashicons {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+/* ---------- "Forgot your password?" (rendered in the login form) ---------- */
+.login .mgl-lostpassword {
+    margin: -2px 0 16px;
+    text-align: left;
+}
+
+.login .mgl-lostpassword a {
+    font-size: 13px;
+    color: var(--mgl-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.login .mgl-lostpassword a:hover,
+.login .mgl-lostpassword a:focus {
+    color: var(--mgl-ink);
+    text-decoration: underline;
+}
+
+/* ---------- "Remember Me" ---------- */
+#loginform .forgetmenot {
+    margin: 0 0 20px;
+    line-height: 1.4;
+}
+
+#loginform .forgetmenot input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 8px 0 0;
+    vertical-align: -3px;
+    accent-color: var(--mgl-accent);
+}
+
+#loginform .forgetmenot label {
+    display: inline;
+    font-size: 13px;
+    font-weight: 400;
+    color: #52606d;
+    cursor: pointer;
+}
+
+/* ---------- Submit — right aligned, solid accent ---------- */
+#loginform .submit {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.login #wp-submit {
+    width: auto;
+    min-width: 120px;
+    height: auto;
+    margin: 0;
+    padding: 11px 30px;
+    background: var(--mgl-accent);
+    border: none;
+    border-radius: 9px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    text-shadow: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px var(--mgl-accent-shadow);
+    transition: background 0.15s, transform 0.08s, box-shadow 0.15s;
+}
+
+.login #wp-submit:hover,
+.login #wp-submit:focus {
+    background: var(--mgl-accent-dark);
+    box-shadow: 0 8px 20px var(--mgl-accent-shadow-hi);
+}
+
+.login #wp-submit:active {
+    transform: translateY(1px);
+}
+
+/* ---------- Core nav links ---------- */
+/* On the main login view core's lost-password link is replaced by
+   .mgl-lostpassword, so hide only that anchor — the Register link
+   (rendered in the same #nav when "Anyone can register" is on)
+   stays reachable. When #nav has no Register link it is empty, so
+   collapse it. Lost-password / reset screens keep their #nav links. */
+body.login-action-login #nav {
+    font-size: 0;
+}
+
+body.login-action-login #nav a.wp-login-lost-password,
+body.login-action-login #nav a[href*="action=lostpassword"] {
+    display: none;
+}
+
+body.login-action-login #nav a {
+    font-size: 13px;
+}
+
+body.login-action-login #nav:not(:has(a[href*="action=register"])) {
+    display: none;
+}
+
+.login #nav {
+    margin: 20px 0 0;
+    padding: 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+.login #nav a,
+.login #backtoblog a {
+    color: var(--mgl-accent);
+    text-decoration: none;
+}
+
+.login #nav a:hover,
+.login #backtoblog a:hover {
+    color: var(--mgl-accent-dark);
+    text-decoration: underline;
+}
+
+.login #backtoblog {
+    display: none;
+}
+
+.login .privacy-policy-page-link {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.login .privacy-policy-page-link a {
+    color: #9ca3af;
+}
+
+/* ---------- Error / message boxes ---------- */
+.login #login .message,
+.login #login .notice,
+.login #login #login_error {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    border-left: 4px solid var(--mgl-accent);
+    background: #eef4ff;
+    color: #1e3a8a;
+    font-size: 13px;
+    font-weight: 400;
+    box-shadow: none;
+}
+
+.login #login #login_error {
+    border-left-color: #dc2626;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+/* ---------- Language switcher — under the form, inside the card ---------- */
+/* login.js moves WordPress' switcher into the card before the first
+   paint (it runs right after the switcher's markup). Until then it is
+   hidden so it never flashes at the bottom of the page; without
+   JavaScript it stays visible below the card. */
+body.mgl-login.js > .language-switcher {
+    visibility: hidden;
+}
+
+body.mgl-login > .language-switcher {
+    position: relative;
+    z-index: 1;
+    width: 360px;
+    max-width: 100%;
+    margin: 16px 0 0;
+    padding: 16px 20px;
+    background: #ffffff;
+    border-radius: var(--mgl-card-radius);
+    box-sizing: border-box;
+}
+
+body.login #login .language-switcher {
+    margin: 24px 0 0;
+    padding: 20px 0 0;
+    border-top: 1px solid var(--mgl-field-border);
+    text-align: left;
+}
+
+.login .language-switcher #language-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.login .language-switcher label {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: #52606d;
+}
+
+.login .language-switcher label .dashicons {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    color: var(--mgl-muted);
+}
+
+.login .language-switcher select {
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    height: 40px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 32px 0 12px;
+    border: 1px solid var(--mgl-field-border);
+    border-radius: 9px;
+    background-color: var(--mgl-field-bg);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 38px;
+    color: var(--mgl-ink);
+    box-shadow: none;
+}
+
+.login .language-switcher select:focus {
+    border-color: var(--mgl-accent);
+    box-shadow: 0 0 0 3px var(--mgl-accent-ring);
+    outline: none;
+}
+
+.login .language-switcher .button {
+    flex: 0 0 auto;
+    height: 40px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 18px;
+    border: 1px solid var(--mgl-accent);
+    border-radius: 9px;
+    background: #ffffff;
+    color: var(--mgl-accent);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 38px;
+    box-shadow: none;
+}
+
+.login .language-switcher .button:hover,
+.login .language-switcher .button:focus {
+    border-color: var(--mgl-accent-dark);
+    background: var(--mgl-accent);
+    color: #ffffff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 782px) {
+    body.login {
+        justify-content: center;
+        align-items: center;
+        padding: max(120px, calc(var(--mgl-logo-h) + 43px)) 20px 40px;
+        background-attachment: scroll;
+    }
+}
+
+@media (max-width: 480px) {
+    body.login {
+        padding: max(110px, calc(var(--mgl-logo-h-sm) + 54px)) 16px 32px;
+    }
+
+    body.login #login {
+        width: 100%;
+        padding: 30px 22px 26px;
+    }
+
+    body.mgl-login > .language-switcher {
+        width: 100%;
+    }
+
+    body.login h1 {
+        top: calc(-1 * (var(--mgl-logo-h-sm) + 28px));
+    }
+
+    body.login h1 a {
+        width: var(--mgl-logo-w-sm);
+        height: var(--mgl-logo-h-sm);
+    }
+}
+
+/* Genuinely short viewports only — the logo is out of normal flow above
+   the card, so on a short screen it would clip off the top of the page.
+   Anchor the layout to the top and reserve space for it instead. */
+@media (max-height: 580px) {
+    body.login {
+        justify-content: flex-start;
+        padding-top: max(140px, calc(var(--mgl-logo-h) + 63px));
+    }
+}

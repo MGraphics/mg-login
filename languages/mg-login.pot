@@ -1,0 +1,268 @@
+# Copyright (C) 2026 MGraphics
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MG Login 1.0.0\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/mgraphics/mg-login/-/issues\n"
+"Last-Translator: MGraphics\n"
+"Language-Team: MGraphics\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-21T20:21:31+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: mg-login\n"
+
+#. Plugin Name of the plugin
+#: mg-login.php
+#: includes/class-admin.php:43
+#: includes/class-admin.php:44
+#: includes/class-admin.php:131
+msgid "MG Login"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: mg-login.php
+msgid "https://mgraphics.com.pl/mg-login/"
+msgstr ""
+
+#. Description of the plugin
+#: mg-login.php
+msgid "A branded login screen: your logo, colours and background photo on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages."
+msgstr ""
+
+#. Author of the plugin
+#: mg-login.php
+msgid "MGraphics"
+msgstr ""
+
+#. Author URI of the plugin
+#: mg-login.php
+msgid "https://mgraphics.com.pl"
+msgstr ""
+
+#: includes/class-admin.php:77
+msgid "Settings"
+msgstr ""
+
+#: includes/class-admin.php:99
+msgid "Choose the logo"
+msgstr ""
+
+#: includes/class-admin.php:100
+msgid "Choose the background image"
+msgstr ""
+
+#: includes/class-admin.php:101
+msgid "Use this image"
+msgstr ""
+
+#: includes/class-admin.php:111
+msgid "You are not allowed to do this."
+msgstr ""
+
+#: includes/class-admin.php:133
+msgid "The look of the login screen. Sign-in itself, the login address and the e-mails are not changed. Leave a field empty to use the automatic value."
+msgstr ""
+
+#: includes/class-admin.php:134
+msgid "Open the login screen"
+msgstr ""
+
+#: includes/class-admin.php:139
+msgid "The default settings have been restored."
+msgstr ""
+
+#: includes/class-admin.php:145
+#: includes/class-admin.php:148
+msgid "Logo"
+msgstr ""
+
+#: includes/class-admin.php:152
+msgid "MGraphics logo (default)"
+msgstr ""
+
+#: includes/class-admin.php:153
+#: includes/class-admin.php:239
+msgid "Image from the media library"
+msgstr ""
+
+#: includes/class-admin.php:154
+msgid "No logo"
+msgstr ""
+
+#: includes/class-admin.php:158
+msgid "A PNG with a transparent background works best; the logo is shown above the card."
+msgstr ""
+
+#: includes/class-admin.php:162
+msgid "Logo width"
+msgstr ""
+
+#. translators: %d: default width in pixels.
+#: includes/class-admin.php:168
+#, php-format
+msgid "Default: %d px. The height follows the image; on phones the logo is about a quarter smaller."
+msgstr ""
+
+#: includes/class-admin.php:174
+msgid "Logo link"
+msgstr ""
+
+#: includes/class-admin.php:177
+msgid "Empty: the home page of this site."
+msgstr ""
+
+#: includes/class-admin.php:181
+msgid "Logo title"
+msgstr ""
+
+#: includes/class-admin.php:184
+msgid "Text of the logo link, read by screen readers. Empty: the site title."
+msgstr ""
+
+#: includes/class-admin.php:189
+msgid "Card"
+msgstr ""
+
+#: includes/class-admin.php:192
+msgid "Heading"
+msgstr ""
+
+#: includes/class-admin.php:194
+#: includes/class-login-screen.php:63
+msgid "Log in"
+msgstr ""
+
+#: includes/class-admin.php:195
+msgid "Shown above the login form. Empty: \"Log in\" in the language of the login screen."
+msgstr ""
+
+#: includes/class-admin.php:199
+msgid "Card position"
+msgstr ""
+
+#: includes/class-admin.php:203
+msgid "Left (default)"
+msgstr ""
+
+#: includes/class-admin.php:204
+msgid "Centre"
+msgstr ""
+
+#: includes/class-admin.php:205
+msgid "Right"
+msgstr ""
+
+#: includes/class-admin.php:208
+msgid "On large screens. On tablets and phones the card is always centred."
+msgstr ""
+
+#: includes/class-admin.php:212
+msgid "Language switcher"
+msgstr ""
+
+#: includes/class-admin.php:216
+msgid "Show the language switcher under the form"
+msgstr ""
+
+#: includes/class-admin.php:218
+msgid "WordPress shows it only when at least one language other than English is installed."
+msgstr ""
+
+#: includes/class-admin.php:223
+msgid "Colours"
+msgstr ""
+
+#: includes/class-admin.php:226
+msgid "Accent"
+msgstr ""
+
+#: includes/class-admin.php:226
+msgid "Button, links, field focus and the tick of \"Remember Me\"."
+msgstr ""
+
+#: includes/class-admin.php:227
+msgid "Accent on hover"
+msgstr ""
+
+#: includes/class-admin.php:227
+msgid "Button and links under the mouse; usually a slightly darker accent."
+msgstr ""
+
+#: includes/class-admin.php:231
+msgid "Background"
+msgstr ""
+
+#: includes/class-admin.php:234
+msgid "Background image"
+msgstr ""
+
+#: includes/class-admin.php:238
+msgid "MGraphics photo (default)"
+msgstr ""
+
+#: includes/class-admin.php:240
+msgid "No image, colour only"
+msgstr ""
+
+#: includes/class-admin.php:244
+msgid "The image covers the whole screen; about 1920 × 1080 px is enough."
+msgstr ""
+
+#: includes/class-admin.php:247
+msgid "Background colour"
+msgstr ""
+
+#: includes/class-admin.php:247
+msgid "Shown without an image and while the image loads."
+msgstr ""
+
+#: includes/class-admin.php:249
+msgid "Shading"
+msgstr ""
+
+#: includes/class-admin.php:253
+msgid "Darken the background slightly towards the right"
+msgstr ""
+
+#: includes/class-admin.php:259
+msgid "Custom CSS"
+msgstr ""
+
+#: includes/class-admin.php:262
+msgid "Additional CSS"
+msgstr ""
+
+#: includes/class-admin.php:268
+msgid "Loaded only on the login screen, after the plugin's styles. Example: <code>body.login #login { border-radius: 0; }</code>"
+msgstr ""
+
+#: includes/class-admin.php:283
+msgid "Restore all MG Login settings to the defaults?"
+msgstr ""
+
+#: includes/class-admin.php:283
+msgid "Restore the defaults"
+msgstr ""
+
+#: includes/class-admin.php:324
+msgid "Choose image"
+msgstr ""
+
+#: includes/class-admin.php:325
+msgid "Remove"
+msgstr ""
+
+#: includes/class-login-screen.php:49
+msgid "Username or email"
+msgstr ""
+
+#: includes/class-login-screen.php:50
+msgid "Password"
+msgstr ""
+
+#: includes/class-login-screen.php:139
+msgid "Forgot your password?"
+msgstr ""
