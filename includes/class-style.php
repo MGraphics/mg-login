@@ -30,7 +30,8 @@ final class Style {
 	 *
 	 * @param array<string, mixed> $s       Settings (Settings::all()).
 	 * @param array<string, mixed> $context Resolved values: heading (string), logo_url (string),
-	 *                                      logo_w / logo_h (int, natural size), bg_url (string).
+	 *                                      logo_w / logo_h (int, natural size), bg_url (string),
+	 *                                      bg_design (bool, the CSS background when there is no image).
 	 * @return string
 	 */
 	public static function inline_css( array $s, array $context ): string {
@@ -46,7 +47,7 @@ final class Style {
 			'--mgl-accent-shadow'    => self::rgba( $s['accent'], 0.30 ),
 			'--mgl-accent-shadow-hi' => self::rgba( $s['accent'], 0.38 ),
 			'--mgl-bg-color'         => $s['bg_color'],
-			'--mgl-bg-image'         => '' !== $context['bg_url'] ? self::url( $context['bg_url'] ) : 'none',
+			'--mgl-bg-image'         => self::background( $context ),
 			'--mgl-logo-image'       => '' !== $context['logo_url'] ? self::url( $context['logo_url'] ) : 'none',
 			'--mgl-logo-w'           => $width . 'px',
 			'--mgl-logo-h'           => $height . 'px',
@@ -67,6 +68,20 @@ final class Style {
 			$css .= "\n" . Settings::css( (string) $s['custom_css'] );
 		}
 		return $css;
+	}
+
+	/**
+	 * The background-image value: the chosen image, the MGraphics design drawn in login.css, or
+	 * none (colour only).
+	 *
+	 * @param array<string, mixed> $context Resolved values.
+	 * @return string
+	 */
+	public static function background( array $context ): string {
+		if ( '' !== (string) ( $context['bg_url'] ?? '' ) ) {
+			return self::url( (string) $context['bg_url'] );
+		}
+		return empty( $context['bg_design'] ) ? 'none' : 'var(--mgl-bg-design)';
 	}
 
 	/**

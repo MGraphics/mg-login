@@ -1,0 +1,58 @@
+# MG Login: tests on every push; a tag v<version> builds the packages and attaches them to the
+# GitHub Release of that tag (created when missing; packages already attached are kept). The plugin's update checker installs the
+# release asset mg-login-<version>.zip.
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+      - run: composer install --no-interaction --no-progress
+      - run: vendor/bin/phpunit
+      - run: find . -path ./vendor -prune -o -path ./lib -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          VERSION="${TAG#v}"
+          bin/build.sh
+          test -f "build/mg-login-${VERSION}.zip"
+      - name: Attach the packages to the release
+        run: |
+          VERSION="${TAG#v}"
+          gh release view "$TAG" > /dev/null 2>&1 || gh release create "$TAG" --verify-tag \
+            --title "MG Login $VERSION" \
+            --notes "MG Login $VERSION. Changelog: readme.txt. Install or update with mg-login-$VERSION.zip; the -wporg package is the WordPress.org build without the update checker."
+          # Packages already attached by hand are kept as they are.
+          EXISTING="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
+          for file in "mg-login-${VERSION}.zip" "mg-login-${VERSION}-wporg.zip"; do
+            if printf '%s\n' "$EXISTING" | grep -qxF "$file"; then
+              echo "$file is already attached"
+            else
+              gh release upload "$TAG" "build/$file"
+            fi
+          done

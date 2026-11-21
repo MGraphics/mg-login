@@ -73,6 +73,16 @@ final class StyleTest extends TestCase {
 		$this->assertStringContainsString( '--mgl-logo-image:none;', $css );
 	}
 
+	public function test_default_background_is_the_css_design(): void {
+		$css = Style::inline_css( Settings::defaults(), $this->context( array( 'bg_url' => '', 'bg_design' => true ) ) );
+		$this->assertStringContainsString( '--mgl-bg-image:var(--mgl-bg-design);', $css );
+	}
+
+	public function test_an_image_wins_over_the_design(): void {
+		$css = Style::inline_css( Settings::defaults(), $this->context( array( 'bg_design' => true ) ) );
+		$this->assertStringContainsString( '--mgl-bg-image:url("https://example.com/bg.jpg");', $css );
+	}
+
 	public function test_custom_css_is_appended(): void {
 		$s               = Settings::defaults();
 		$s['custom_css'] = 'body.login #login{border-radius:0}';

@@ -1,6 +1,6 @@
 # MG Login
 
-WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a full-screen photo, the logo above it, field icons and placeholders, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults reproduce the login screen of mgraphics.com.pl; every part can be changed for a client site.
+WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a soft full-screen background (a CSS design by default, or any photo from the media library), the logo above it, field icons and placeholders, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults give the MGraphics look; every part can be changed for a client site.
 
 Polski opis, FAQ i lista zmian: [readme.txt](readme.txt). The plugin is fully translated into Polish.
 
@@ -10,7 +10,7 @@ Polski opis, FAQ i lista zmian: [readme.txt](readme.txt). The plugin is fully tr
 
 ## Install
 
-Download `mg-login-<version>.zip` from the latest [release](../../releases) and upload it in **Plugins → Add New → Upload Plugin**. Later versions show up as normal WordPress updates (see *Updates* below).
+Download `mg-login-<version>.zip` from the latest release at https://github.com/MGraphics/mg-login/releases (the release asset, not GitHub's "Source code" archive) and upload it in **Plugins → Add New Plugin → Upload Plugin**. Later versions show up as normal WordPress updates (see *Updates* below).
 
 ## Settings (Settings → MG Login)
 
@@ -23,7 +23,7 @@ Download `mg-login-<version>.zip` from the latest [release](../../releases) and 
 | Card position on large screens: left / centre / right | left |
 | Language switcher under the form | on |
 | Accent / accent on hover | `#2563eb` / `#1d4ed8` |
-| Background: MGraphics photo / media library image / colour only | MGraphics photo |
+| Background: MGraphics design (CSS, no image) / media library image / colour only | MGraphics design |
 | Background colour | `#ece8e3` |
 | Light shading towards the right | on |
 | Additional CSS (login screen only) | – |
@@ -36,21 +36,21 @@ Download `mg-login-<version>.zip` from the latest [release](../../releases) and 
 - `assets/css/login.css` uses the selectors of the original theme stylesheet, so the cascade against WordPress' own login CSS is unchanged; the site's settings arrive as CSS custom properties in an inline style.
 - `assets/js/login.js` is printed in the login footer right after WordPress' language switcher and moves it into the card before the first paint (and adds the placeholders). Without JavaScript the switcher stays in a white box under the card.
 - The "Forgot your password?" link uses `wp_lostpassword_url()`, so it follows a private login address set by MG Stealth or WPS Hide Login.
-- No external requests: Open Sans (latin + latin-ext, variable woff2) and the default images are bundled.
+- No external requests: Open Sans (latin + latin-ext, variable woff2) and the default logo are bundled; the default background is pure CSS (`--mgl-bg-design` in `login.css`).
 
-## Updates (GitLab Releases)
+## Updates (GitHub Releases)
 
-The GitLab build bundles [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker) (MIT) and asks this project's Releases for new versions. It installs the release asset named `mg-login-<version>.zip`. The project address is the constant `MG_LOGIN_UPDATE_REPOSITORY` in `mg-login.php` (placeholder `https://gitlab.com/mgraphics/mg-login/`; it can also be defined in `wp-config.php`). `MG_LOGIN_DISABLE_UPDATES` switches the checks off. The WordPress.org build has neither the library nor the `Update URI` header.
+The GitHub build bundles [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker) (MIT) and asks the Releases of the public repository https://github.com/MGraphics/mg-login for new versions. It installs only the release asset named `mg-login-<version>.zip`, never the source archive, and needs no token. The repository address is the constant `MG_LOGIN_UPDATE_REPOSITORY` in `mg-login.php` (it can also be defined in `wp-config.php`); `MG_LOGIN_DISABLE_UPDATES` switches the checks off. The WordPress.org build has neither the library nor the `Update URI` header.
 
 ### Releasing a version
 
 1. Bump the version in three places: the `Version:` header and `MG_LOGIN_VERSION` in `mg-login.php`, and `Stable tag:` in `readme.txt`; add a changelog entry to `readme.txt`.
 2. `bin/i18n.sh` when strings changed; `vendor/bin/phpunit`.
 3. Commit, tag `v<version>` and push the tag: `git tag v1.0.1 && git push origin main v1.0.1`.
-4. The tag pipeline (`.gitlab-ci.yml`) runs the tests, builds both packages with `bin/build.sh`, uploads them to the project's Generic Package Registry and creates the GitLab Release `v<version>` with `mg-login-<version>.zip` as a release asset.
+4. The tag workflow (`.github/workflows/release.yml`) runs the tests, builds both packages with `bin/build.sh` and attaches `mg-login-<version>.zip` and `mg-login-<version>-wporg.zip` to the GitHub Release `v<version>` (creating it when missing). A release can also be made by hand: `bin/build.sh`, then `gh release create v1.0.1 build/mg-login-1.0.1.zip build/mg-login-1.0.1-wporg.zip`.
 5. Sites with the plugin see the update within 12 hours (or at once via **Dashboard → Updates → Check again**).
 
-The project must be **public**, otherwise sites cannot read the releases without a token.
+The repository must stay **public**, otherwise sites cannot read the releases without a token.
 
 ## Development
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds the release packages into build/:
-#   mg-login-<version>.zip         GitLab release (with the update checker, Update URI header)
+#   mg-login-<version>.zip         GitHub release asset (with the update checker, Update URI header)
 #   mg-login-<version>-wporg.zip   WordPress.org (no update checker, no Update URI)
 # Both unpack to a folder named mg-login/.
 set -euo pipefail
@@ -14,22 +14,22 @@ if [ "$VERSION" != "$STABLE" ] || [ "$VERSION" != "$CONST" ]; then
 fi
 OUT="$ROOT/build"
 rm -rf "$OUT"
-mkdir -p "$OUT/gitlab" "$OUT/wporg"
+mkdir -p "$OUT/github" "$OUT/wporg"
 
-rsync -a --exclude-from="$ROOT/.distignore" "$ROOT/" "$OUT/gitlab/mg-login/"
-rsync -a "$OUT/gitlab/mg-login/" "$OUT/wporg/mg-login/"
+rsync -a --exclude-from="$ROOT/.distignore" "$ROOT/" "$OUT/github/mg-login/"
+rsync -a "$OUT/github/mg-login/" "$OUT/wporg/mg-login/"
 
 # WordPress.org: updates come from WordPress.org itself.
 WP="$OUT/wporg/mg-login"
 rm -rf "$WP/lib" "$WP/includes/class-updater.php"
-sed -i.bak -e '/^ \* Update URI:/d' -e '/gitlab-build:start/,/gitlab-build:end/d' "$WP/mg-login.php"
+sed -i.bak -e '/^ \* Update URI:/d' -e '/github-build:start/,/github-build:end/d' "$WP/mg-login.php"
 rm -f "$WP/mg-login.php.bak"
-if grep -R -n -i -E 'update uri|plugin-update-checker|PucFactory|gitlab-build' "$WP" --include='*.php'; then
+if grep -R -n -i -E 'update uri|plugin-update-checker|PucFactory|github-build' "$WP" --include='*.php'; then
 	echo "The WordPress.org build still contains update-checker code." >&2
 	exit 1
 fi
 
-( cd "$OUT/gitlab" && zip -qr "../mg-login-$VERSION.zip" mg-login )
+( cd "$OUT/github" && zip -qr "../mg-login-$VERSION.zip" mg-login )
 ( cd "$OUT/wporg" && zip -qr "../mg-login-$VERSION-wporg.zip" mg-login )
 echo "$OUT/mg-login-$VERSION.zip"
 echo "$OUT/mg-login-$VERSION-wporg.zip"

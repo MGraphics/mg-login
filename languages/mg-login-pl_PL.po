@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MG Login 1.0.0\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/mgraphics/mg-login/-/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/MGraphics/mg-login/issues\n"
 "Last-Translator: MGraphics\n"
 "Language-Team: MGraphics\n"
 "PO-Revision-Date: 2026-11-21 22:00+0100\n"
@@ -24,13 +24,13 @@ msgstr "MG Login"
 
 #. Plugin URI of the plugin
 #: mg-login.php
-msgid "https://mgraphics.com.pl/mg-login/"
-msgstr "https://mgraphics.com.pl/mg-login/"
+msgid "https://github.com/MGraphics/mg-login"
+msgstr "https://github.com/MGraphics/mg-login"
 
 #. Description of the plugin
 #: mg-login.php
-msgid "A branded login screen: your logo, colours and background photo on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages."
-msgstr "Firmowy ekran logowania: twoje logo, kolory i zdjęcie w tle, przejrzysta karta i wybór języka pod formularzem. Zmienia wyłącznie ekran logowania; na publicznych stronach nic nie dodaje."
+msgid "A branded login screen: your logo, colours and background on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages."
+msgstr "Firmowy ekran logowania: twoje logo, kolory i tło, przejrzysta karta i wybór języka pod formularzem. Zmienia wyłącznie ekran logowania; na publicznych stronach nic nie dodaje."
 
 #. Author of the plugin
 #: mg-login.php
@@ -200,8 +200,8 @@ msgid "Background image"
 msgstr "Obraz tła"
 
 #: includes/class-admin.php:238
-msgid "MGraphics photo (default)"
-msgstr "Zdjęcie MGraphics (domyślne)"
+msgid "MGraphics design (default)"
+msgstr "Wzór MGraphics (domyślny)"
 
 #: includes/class-admin.php:240
 msgid "No image, colour only"
@@ -263,6 +263,6 @@ msgstr "Nazwa użytkownika lub e-mail"
 msgid "Password"
 msgstr "Hasło"
 
-#: includes/class-login-screen.php:139
+#: includes/class-login-screen.php:145
 msgid "Forgot your password?"
 msgstr "Zapomniałeś hasła?"

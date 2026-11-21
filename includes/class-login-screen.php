@@ -60,11 +60,13 @@ final class Login_Screen {
 	 */
 	public function context( array $s ): array {
 		$context = array(
-			'heading'  => '' !== $s['heading'] ? (string) $s['heading'] : __( 'Log in', 'mg-login' ),
-			'logo_url' => '',
-			'logo_w'   => Style::DEFAULT_LOGO_W,
-			'logo_h'   => Style::DEFAULT_LOGO_H,
-			'bg_url'   => '',
+			'heading'   => '' !== $s['heading'] ? (string) $s['heading'] : __( 'Log in', 'mg-login' ),
+			'logo_url'  => '',
+			'logo_w'    => Style::DEFAULT_LOGO_W,
+			'logo_h'    => Style::DEFAULT_LOGO_H,
+			'bg_url'    => '',
+			// The default background is drawn in CSS (no bundled photo).
+			'bg_design' => false,
 		);
 
 		if ( 'default' === $s['logo_type'] ) {
@@ -81,10 +83,14 @@ final class Login_Screen {
 		}
 
 		if ( 'default' === $s['bg_type'] ) {
-			$context['bg_url'] = MG_LOGIN_URL . 'assets/images/login-bg.jpg';
+			$context['bg_design'] = true;
 		} elseif ( 'custom' === $s['bg_type'] && $s['bg_image_id'] ) {
-			$image             = wp_get_attachment_image_src( (int) $s['bg_image_id'], 'full' );
-			$context['bg_url'] = $image ? (string) $image[0] : MG_LOGIN_URL . 'assets/images/login-bg.jpg';
+			$image = wp_get_attachment_image_src( (int) $s['bg_image_id'], 'full' );
+			if ( $image ) {
+				$context['bg_url'] = (string) $image[0];
+			} else {
+				$context['bg_design'] = true;
+			}
 		}
 		return $context;
 	}

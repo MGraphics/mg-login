@@ -13,9 +13,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 PL = {
     "MG Login": "MG Login",
-    "https://mgraphics.com.pl/mg-login/": "https://mgraphics.com.pl/mg-login/",
-    "A branded login screen: your logo, colours and background photo on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages.":
-        "Firmowy ekran logowania: twoje logo, kolory i zdjęcie w tle, przejrzysta karta i wybór języka pod formularzem. Zmienia wyłącznie ekran logowania; na publicznych stronach nic nie dodaje.",
+    "https://github.com/MGraphics/mg-login": "https://github.com/MGraphics/mg-login",
+    "A branded login screen: your logo, colours and background on a clean card, with the language switcher placed under the form. Styles only the login screen; nothing is added to the public pages.":
+        "Firmowy ekran logowania: twoje logo, kolory i tło, przejrzysta karta i wybór języka pod formularzem. Zmienia wyłącznie ekran logowania; na publicznych stronach nic nie dodaje.",
     "MGraphics": "MGraphics",
     "https://mgraphics.com.pl": "https://mgraphics.com.pl",
     "Settings": "Ustawienia",
@@ -65,7 +65,7 @@ PL = {
         "Przycisk i linki pod kursorem; zwykle nieco ciemniejszy akcent.",
     "Background": "Tło",
     "Background image": "Obraz tła",
-    "MGraphics photo (default)": "Zdjęcie MGraphics (domyślne)",
+    "MGraphics design (default)": "Wzór MGraphics (domyślny)",
     "No image, colour only": "Bez obrazu, tylko kolor",
     "The image covers the whole screen; about 1920 × 1080 px is enough.":
         "Obraz wypełnia cały ekran; wystarczy około 1920 × 1080 px.",
@@ -99,7 +99,7 @@ def main() -> int:
         'msgid ""',
         'msgstr ""',
         '"Project-Id-Version: MG Login 1.0.0\\n"',
-        '"Report-Msgid-Bugs-To: https://gitlab.com/mgraphics/mg-login/-/issues\\n"',
+        '"Report-Msgid-Bugs-To: https://github.com/MGraphics/mg-login/issues\\n"',
         '"Last-Translator: MGraphics\\n"',
         '"Language-Team: MGraphics\\n"',
         '"PO-Revision-Date: 2026-11-21 22:00+0100\\n"',
