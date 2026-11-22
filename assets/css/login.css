@@ -96,26 +96,39 @@ body.login {
     --mgl-logo-h-sm:        56px;
     --mgl-heading:          'Logowanie';
     --mgl-card-align:       flex-start;
-    --mgl-overlay:          block;
+    /* Very light wash, drawn over the background, to seat the white card and the logo on a
+       bright photo. */
+    --mgl-shade-design:     linear-gradient(90deg, rgba(30, 34, 40, 0.04) 0%, rgba(30, 34, 40, 0.14) 100%);
+    --mgl-shade:            var(--mgl-shade-design);
     --mgl-ink:              #1f2933;
+    --mgl-text:             #52606d;
+    --mgl-faint:            #6b7684;
+    /* Decoration only (the language icon): too pale for text. */
     --mgl-muted:            #8a94a6;
-    --mgl-field-bg:         #f4f6f8;
-    --mgl-field-border:     #dfe3e8;
+    --mgl-field-bg:         #ffffff;
+    --mgl-field-border:     #7f8a9c;
+    --mgl-rule:             #e3e7ec;
+    --mgl-error:            #b42318;
+    --mgl-warning:          #8a5a00;
+    --mgl-success:          #1a6b3c;
     --mgl-card-radius:      14px;
 }
 
 /* ---------- Page / background ---------- */
 /* One column: the card (with the language switcher inside it) is
-   centred vertically and placed left / centre / right by setting. */
+   centred vertically and placed left / centre / right by setting.
+   Background layers, top to bottom: the shading, the image or design, the colour. */
 body.login {
     font-family: 'MG Login Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 300;
     color: var(--mgl-ink);
     margin: 0;
     padding: 0;
+    /* WordPress gives the body a fixed height; let it grow with a tall card instead. */
+    height: auto;
     min-height: 100vh;
     background-color: var(--mgl-bg-color);
-    background-image: var(--mgl-bg-image);
+    background-image: var(--mgl-shade), var(--mgl-bg-image);
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -128,14 +141,30 @@ body.login {
     padding: 6vh 9vw;
 }
 
-/* Very light wash to seat the white card and the logo on a bright background. */
-body.login::before {
-    content: '';
-    display: var(--mgl-overlay);
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(30, 34, 40, 0.04) 0%, rgba(30, 34, 40, 0.14) 100%);
-    z-index: 0;
+/* Large screens: the space above and below the card is two flexible spacers of equal share,
+   so the card is centred. The logo hangs above the card, outside the flow: the upper spacer
+   never gets smaller than the logo, so a tall card (errors, registration, a new password) or
+   a low window cannot push the logo off the top; the page scrolls only when it must. */
+@media (min-width: 783px) {
+    body.login {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    body.login::before,
+    body.login::after {
+        content: '';
+        flex: 1 1 0;
+        min-height: 6vh;
+    }
+
+    body.login::before {
+        min-height: max(6vh, calc(var(--mgl-logo-h) + 43px));
+    }
+
+    body.login.mgl-no-logo::before {
+        min-height: 6vh;
+    }
 }
 
 /* ---------- Card ---------- */
@@ -153,7 +182,8 @@ body.login #login {
 }
 
 /* ---------- Logo — sits ABOVE the card on the transparent page ---------- */
-body.login h1 {
+/* Only the card's own h1 is the logo: headings inside a form stay in the form. */
+body.login #login > h1 {
     position: absolute;
     left: 0;
     right: 0;
@@ -161,7 +191,7 @@ body.login h1 {
     margin: 0;
 }
 
-body.login h1 a {
+body.login #login > h1 a {
     display: block;
     width: var(--mgl-logo-w);
     height: var(--mgl-logo-h);
@@ -212,99 +242,71 @@ body.login-action-login #login::before {
     overflow: visible;
 }
 
-/* Visually hide the username / password labels — icons + placeholders
-   stand in for them. Kept in the DOM for screen readers. The
-   "Remember Me" label is deliberately left visible. */
-#loginform label[for="user_login"],
-#loginform label[for="user_pass"] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-    border: 0;
+/* ---------- Fields ---------- */
+/* A label above each field and a plain outlined box: no icons, no placeholders,
+   nothing inside the field but the text (and WordPress' show-password button).
+   The same on every screen: log in, lost password, new password, registration. */
+.login #login > form label {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--mgl-ink);
 }
 
-/* Core "Remember Me" help toggletip — hidden for the clean look;
-   the checkbox itself keeps its normal behaviour. */
-#loginform .forgetmenot .wp-tooltip {
-    display: none;
-}
-
-/* Field rows — relative so the icon can be pinned inside */
-#loginform > p:first-of-type,
-#loginform .user-login-wrap,
-#loginform .user-pass-wrap {
-    position: relative;
+/* Field rows */
+.login #login > form > p,
+.login #login > form > div {
     margin: 0 0 16px;
 }
 
-/* Icon prefixes — inline SVG, never glyph fonts */
-#loginform > p:first-of-type::before,
-#loginform .user-login-wrap::before,
-#loginform .user-pass-wrap::before {
-    content: '';
-    position: absolute;
-    left: 14px;
-    top: 13px;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 20px 20px;
-    pointer-events: none;
-    z-index: 2;
+/* The new-password label sits in its own paragraph. */
+.login #login > form .user-pass1-wrap > p {
+    margin: 0;
 }
 
-/* user / person icon */
-#loginform > p:first-of-type::before,
-#loginform .user-login-wrap::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238a94a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2'/%3E%3C/svg%3E");
-}
-
-/* padlock icon */
-#loginform .user-pass-wrap::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238a94a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
-}
-
-/* ---------- Inputs ---------- */
-.login #loginform input[type="text"],
-.login #loginform input[type="password"],
-.login #loginform input[type="email"],
-.login .input {
+.login #login > form .input,
+.login #login > form input[type="text"],
+.login #login > form input[type="password"],
+.login #login > form input[type="email"] {
+    display: block;
     width: 100%;
     height: 46px;
+    min-height: 0;
     margin: 0;
-    padding: 0 42px 0 44px;
+    padding: 0 14px;
     border: 1px solid var(--mgl-field-border);
     border-radius: 9px;
     background: var(--mgl-field-bg);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 400;
     color: var(--mgl-ink);
-    line-height: 46px;
+    line-height: 44px;
     box-sizing: border-box;
     box-shadow: none;
     outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.login #loginform input[type="text"]:focus,
-.login #loginform input[type="password"]:focus,
-.login #loginform input[type="email"]:focus,
-.login .input:focus {
+.login #login > form .input:focus,
+.login #login > form input[type="text"]:focus,
+.login #login > form input[type="password"]:focus,
+.login #login > form input[type="email"]:focus {
     border-color: var(--mgl-accent);
-    background: #ffffff;
     box-shadow: 0 0 0 3px var(--mgl-accent-ring);
 }
 
-.login #loginform input::placeholder {
-    color: var(--mgl-muted);
-    opacity: 1;
+/* Password fields: room for the show-password button; a typed or generated password that is
+   shown uses a monospace face, so similar characters can be told apart. */
+.login #login > form .wp-pwd .input {
+    padding-right: 46px;
+}
+
+.login #login > form .wp-pwd input[type="text"] {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 14px;
 }
 
 /* Password field wrapper + core "show password" toggle */
@@ -314,16 +316,18 @@ body.login-action-login #login::before {
 
 .login .wp-pwd button.wp-hide-pw {
     position: absolute;
-    right: 4px;
-    top: 0;
-    height: 46px;
+    right: 3px;
+    top: 3px;
+    height: 40px;
     width: 40px;
+    min-height: 0;
     margin: 0;
     padding: 0;
     background: transparent;
     border: none;
+    border-radius: 7px;
     box-shadow: none;
-    color: var(--mgl-muted);
+    color: var(--mgl-text);
     cursor: pointer;
 }
 
@@ -331,65 +335,156 @@ body.login-action-login #login::before {
     color: var(--mgl-ink);
 }
 
+.login .wp-pwd button.wp-hide-pw:focus {
+    outline: 2px solid var(--mgl-accent);
+    outline-offset: -2px;
+    color: var(--mgl-ink);
+}
+
 .login .wp-pwd button.wp-hide-pw .dashicons {
+    position: static;
     width: 20px;
     height: 20px;
     font-size: 20px;
 }
 
+/* Core "Remember Me" help toggletip — hidden for the clean look;
+   the checkbox itself keeps its normal behaviour. */
+#loginform .forgetmenot .wp-tooltip {
+    display: none;
+}
+
+/* ---------- New password: strength and hint ---------- */
+/* The strength is one line of text under the field, in a colour that tells the level;
+   the field's border takes the same colour. */
+.login #login #pass-strength-result {
+    width: auto;
+    margin: 6px 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--mgl-text);
+}
+
+.login #login #pass-strength-result.short,
+.login #login #pass-strength-result.bad {
+    color: var(--mgl-error);
+}
+
+.login #login #pass-strength-result.good {
+    color: var(--mgl-warning);
+}
+
+.login #login #pass-strength-result.strong {
+    color: var(--mgl-success);
+}
+
+.login #login > form #pass1.short,
+.login #login > form #pass1.bad,
+.login #login > form #pass1-text.short,
+.login #login > form #pass1-text.bad {
+    border-color: var(--mgl-error);
+}
+
+.login #login > form #pass1.good,
+.login #login > form #pass1-text.good {
+    border-color: var(--mgl-warning);
+}
+
+.login #login > form #pass1.strong,
+.login #login > form #pass1-text.strong {
+    border-color: var(--mgl-success);
+}
+
+.login #login > form .description,
+.login #login > form #reg_passmail {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--mgl-text);
+}
+
+/* ---------- Checkboxes: "Remember Me", "Confirm use of weak password" ---------- */
+.login #login > form input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 0;
+    min-height: 0;
+    margin: 0 8px 0 0;
+    vertical-align: -3px;
+    border: 1px solid var(--mgl-field-border);
+    border-radius: 4px;
+    box-shadow: none;
+    accent-color: var(--mgl-accent);
+}
+
+.login #login > form .forgetmenot label,
+.login #login > form .pw-weak label {
+    display: inline;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--mgl-text);
+    cursor: pointer;
+}
+
+.login #login > form .pw-weak {
+    margin: 12px 0 0;
+    line-height: 1.4;
+}
+
 /* ---------- "Forgot your password?" (rendered in the login form) ---------- */
-.login .mgl-lostpassword {
-    margin: -2px 0 16px;
+.login #login .mgl-lostpassword {
+    margin: -4px 0 16px;
     text-align: left;
 }
 
-.login .mgl-lostpassword a {
+.login #login .mgl-lostpassword a {
     font-size: 13px;
-    color: var(--mgl-muted);
+    color: var(--mgl-text);
     text-decoration: none;
     transition: color 0.15s;
 }
 
-.login .mgl-lostpassword a:hover,
-.login .mgl-lostpassword a:focus {
+.login #login .mgl-lostpassword a:hover,
+.login #login .mgl-lostpassword a:focus {
     color: var(--mgl-ink);
     text-decoration: underline;
 }
 
 /* ---------- "Remember Me" ---------- */
-#loginform .forgetmenot {
+.login #loginform .forgetmenot {
     margin: 0 0 20px;
     line-height: 1.4;
 }
 
-#loginform .forgetmenot input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin: 0 8px 0 0;
-    vertical-align: -3px;
-    accent-color: var(--mgl-accent);
-}
-
-#loginform .forgetmenot label {
-    display: inline;
-    font-size: 13px;
-    font-weight: 400;
-    color: #52606d;
-    cursor: pointer;
-}
-
-/* ---------- Submit — right aligned, solid accent ---------- */
-#loginform .submit {
+/* ---------- Buttons ---------- */
+/* The form's main button: right aligned, solid accent. */
+.login #login > form .submit {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
     margin: 0;
     padding: 0;
 }
 
-.login #wp-submit {
+.login #login > form .reset-pass-submit {
+    justify-content: space-between;
+}
+
+.login #wp-submit,
+.login #login > form .button-primary {
+    float: none;
     width: auto;
     min-width: 120px;
     height: auto;
+    min-height: 0;
     margin: 0;
     padding: 11px 30px;
     background: var(--mgl-accent);
@@ -408,13 +503,117 @@ body.login-action-login #login::before {
 }
 
 .login #wp-submit:hover,
-.login #wp-submit:focus {
+.login #wp-submit:focus,
+.login #login > form .button-primary:hover,
+.login #login > form .button-primary:focus {
     background: var(--mgl-accent-dark);
     box-shadow: 0 8px 20px var(--mgl-accent-shadow-hi);
 }
 
-.login #wp-submit:active {
+.login #wp-submit:focus-visible,
+.login #login > form .button-primary:focus-visible {
+    outline: 2px solid var(--mgl-accent-dark);
+    outline-offset: 2px;
+}
+
+.login #wp-submit:active,
+.login #login > form .button-primary:active {
     transform: translateY(1px);
+}
+
+.login #wp-submit:disabled,
+.login #wp-submit[disabled],
+.login #login > form .button-primary:disabled {
+    background: #eef0f3 !important;
+    color: #6b7684 !important;
+    box-shadow: none;
+    cursor: default;
+    transform: none;
+}
+
+/* Secondary buttons ("Generate password", "Update"): outlined, as the language switcher's button. */
+.login #login > form .button.wp-generate-pw,
+.login #login > form .admin-email__actions .button:not(.button-primary) {
+    float: none;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--mgl-accent);
+    border-radius: 9px;
+    background: #ffffff;
+    color: var(--mgl-accent);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: none;
+}
+
+.login #login > form .button.wp-generate-pw:hover,
+.login #login > form .button.wp-generate-pw:focus,
+.login #login > form .admin-email__actions .button:not(.button-primary):hover,
+.login #login > form .admin-email__actions .button:not(.button-primary):focus {
+    border-color: var(--mgl-accent-dark);
+    background: var(--mgl-accent);
+    color: #ffffff;
+}
+
+/* ---------- "Confirm the administration email" (shown to administrators after signing in) ---------- */
+.login #login > form .admin-email__heading {
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--mgl-ink);
+}
+
+.login #login > form .admin-email__details {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--mgl-ink);
+}
+
+.login #login > form .admin-email__details strong {
+    font-weight: 600;
+}
+
+.login #login > form .admin-email__details a,
+.login #login > form .admin-email__actions-secondary a {
+    color: var(--mgl-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.login #login > form .admin-email__details a:hover,
+.login #login > form .admin-email__actions-secondary a:hover {
+    color: var(--mgl-accent-dark);
+}
+
+.login #login > form .admin-email__actions {
+    margin: 22px 0 0;
+}
+
+.login #login > form .admin-email__actions-primary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.login #login > form .admin-email__actions-primary .button-primary {
+    order: -1;
+}
+
+.login #login > form .admin-email__actions-secondary {
+    margin: 16px 0 0;
+    font-size: 13px;
 }
 
 /* ---------- Core nav links ---------- */
@@ -441,6 +640,7 @@ body.login-action-login #nav:not(:has(a[href*="action=register"])) {
 }
 
 .login #nav {
+    clear: both;
     margin: 20px 0 0;
     padding: 0;
     text-align: center;
@@ -464,33 +664,104 @@ body.login-action-login #nav:not(:has(a[href*="action=register"])) {
 }
 
 .login .privacy-policy-page-link {
-    color: #9ca3af;
+    color: var(--mgl-faint);
     font-size: 12px;
 }
 
 .login .privacy-policy-page-link a {
-    color: #9ca3af;
+    color: var(--mgl-faint);
 }
 
-/* ---------- Error / message boxes ---------- */
+/* ---------- Notices: logged out, errors, instructions, confirmations ---------- */
+/* Plain text set off from the form by a hairline: no box, no tint, no side bar. An error is
+   told by its colour, its rule and WordPress' own "Error:" prefix. */
 .login #login .message,
 .login #login .notice,
+.login #login .success,
 .login #login #login_error {
-    margin: 0 0 18px;
-    padding: 12px 14px;
-    border-radius: 9px;
-    border-left: 4px solid var(--mgl-accent);
-    background: #eef4ff;
-    color: #1e3a8a;
-    font-size: 13px;
-    font-weight: 400;
+    margin: 0 0 20px;
+    padding: 0 0 14px;
+    border: 0;
+    border-bottom: 1px solid var(--mgl-rule);
+    border-radius: 0;
+    background: none;
     box-shadow: none;
+    color: var(--mgl-ink);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
-.login #login #login_error {
-    border-left-color: #dc2626;
-    background: #fef2f2;
-    color: #b91c1c;
+/* WordPress wraps some messages in a second notice: one rule, not two. */
+.login #login .notice .notice,
+.login #login .notice .message,
+.login #login .message .message,
+.login #login .message .notice {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.login #login .notice p,
+.login #login .message p,
+.login #login #login_error p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.login #login .notice p + p,
+.login #login .message p + p,
+.login #login #login_error p + p {
+    margin-top: 6px;
+}
+
+.login #login .notice strong,
+.login #login .message strong,
+.login #login #login_error strong {
+    font-weight: 600;
+}
+
+.login #login .notice a,
+.login #login .message a,
+.login #login #login_error a {
+    color: var(--mgl-accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.login #login .notice a:hover,
+.login #login .message a:hover,
+.login #login #login_error a:hover {
+    color: var(--mgl-accent-dark);
+}
+
+.login #login #login_error,
+.login #login .notice-error {
+    border-bottom-color: var(--mgl-error);
+    color: var(--mgl-error);
+}
+
+.login #login #login_error a,
+.login #login .notice-error a {
+    color: inherit;
+}
+
+.login #login .notice-warning {
+    border-bottom-color: var(--mgl-warning);
+    color: var(--mgl-warning);
+}
+
+.login #login .login-error-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.login #login .login-error-list li + li {
+    margin-top: 6px;
 }
 
 /* ---------- Language switcher — under the form, inside the card ---------- */
@@ -517,7 +788,7 @@ body.mgl-login > .language-switcher {
 body.login #login .language-switcher {
     margin: 24px 0 0;
     padding: 20px 0 0;
-    border-top: 1px solid var(--mgl-field-border);
+    border-top: 1px solid var(--mgl-rule);
     text-align: left;
 }
 
@@ -622,20 +893,35 @@ body.login #login .language-switcher {
         width: 100%;
     }
 
-    body.login h1 {
+    body.login #login > h1 {
         top: calc(-1 * (var(--mgl-logo-h-sm) + 28px));
     }
 
-    body.login h1 a {
+    body.login #login > h1 a {
         width: var(--mgl-logo-w-sm);
         height: var(--mgl-logo-h-sm);
     }
 }
 
-/* Genuinely short viewports only — the logo is out of normal flow above
+/* Phones and tablets: 16 px text in the fields, so the browser does not zoom in on focus. */
+@media (max-width: 782px) {
+    .login #login > form .input,
+    .login #login > form input[type="text"],
+    .login #login > form input[type="password"],
+    .login #login > form input[type="email"],
+    .login .language-switcher select {
+        font-size: 16px;
+    }
+
+    .login #login > form .wp-pwd input[type="text"] {
+        font-size: 15px;
+    }
+}
+
+/* Low and narrow viewports (a phone held sideways) — the logo is out of normal flow above
    the card, so on a short screen it would clip off the top of the page.
    Anchor the layout to the top and reserve space for it instead. */
-@media (max-height: 580px) {
+@media (max-width: 782px) and (max-height: 580px) {
     body.login {
         justify-content: flex-start;
         padding-top: max(140px, calc(var(--mgl-logo-h) + 63px));

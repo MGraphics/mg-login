@@ -1,6 +1,6 @@
 # MG Login
 
-WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a soft full-screen background (a CSS design by default, or any photo from the media library), the logo above it, field icons and placeholders, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults give the MGraphics look; every part can be changed for a client site.
+WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a soft full-screen background (a CSS design by default, or any photo from the media library), the logo above it, plain fields with their labels above them, messages as plain text set off by a thin line, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults give the MGraphics look; every part can be changed for a client site.
 
 Polski opis, FAQ i lista zmian: [readme.txt](readme.txt). The plugin is fully translated into Polish.
 
@@ -30,11 +30,14 @@ Download `mg-login-<version>.zip` from the latest release at https://github.com/
 
 "Restore the defaults" at the bottom of the page deletes the stored settings.
 
+The MGraphics layout with a photo (as on mgraphics.com.pl): **Background → Image from the media library** (upload the photo there; it is not part of the plugin), **Light shading** on, **Card position → left**, logo above the card.
+
 ## How it works
 
-- Hooks only into the login screen (`login_enqueue_scripts`, `login_headerurl`, `login_headertext`, `login_body_class`, `login_form`, `login_display_language_dropdown`) and, in the admin area, its settings page. Public pages are byte-for-byte the same with the plugin on or off.
-- `assets/css/login.css` uses the selectors of the original theme stylesheet, so the cascade against WordPress' own login CSS is unchanged; the site's settings arrive as CSS custom properties in an inline style.
-- `assets/js/login.js` is printed in the login footer right after WordPress' language switcher and moves it into the card before the first paint (and adds the placeholders). Without JavaScript the switcher stays in a white box under the card.
+- Hooks only into the login screen (`login_enqueue_scripts`, `login_headerurl`, `login_headertext`, `login_body_class`, `login_form`, `login_init`, `login_display_language_dropdown`) and, in the admin area, its settings page. Public pages are byte-for-byte the same with the plugin on or off.
+- `assets/css/login.css`: the page, card and logo keep the selectors of the original theme stylesheet; fields, buttons and messages are scoped to `#login` / `#login > form`, so they win over WordPress' own login CSS on every screen. The site's settings arrive as CSS custom properties in an inline style.
+- Fields have their WordPress labels above them and nothing inside (no icons, no placeholders), on every screen. Messages are plain text with a thin line under them; `wp_admin_notice_args` (added on `login_init`, so on the login screen only) gives WordPress' two notices a live-region role: `#login_error` is `role="alert"`, `#login-message` is `role="status"`.
+- `assets/js/login.js` is printed in the login footer right after WordPress' language switcher and moves it into the card before the first paint (and gives the same roles to notices printed by other plugins in the old markup). Without JavaScript the switcher stays in a white box under the card.
 - The "Forgot your password?" link uses `wp_lostpassword_url()`, so it follows a private login address set by MG Stealth or WPS Hide Login.
 - No external requests: Open Sans (latin + latin-ext, variable woff2) and the default logo are bundled; the default background is pure CSS (`--mgl-bg-design` in `login.css`).
 

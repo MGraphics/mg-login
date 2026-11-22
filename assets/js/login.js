@@ -4,8 +4,9 @@
  *
  * 1. Moves the language switcher into the card, under the form (before the privacy policy
  *    link when there is one). Without JavaScript it stays below the card.
- * 2. Adds placeholders to the username and password fields of the main login form (their
- *    labels are visually hidden but stay for screen readers).
+ * 2. Marks notices printed by other plugins in the old markup (a bare <p class="message"> or
+ *    #login_error) the way MG Login marks WordPress' own: errors as alerts, the rest as
+ *    polite status messages.
  */
 ( function () {
 	'use strict';
@@ -17,15 +18,16 @@
 		document.body.classList.add( 'mgl-switcher-in-card' );
 	}
 
-	var texts = window.mgLogin || {};
-	var user = document.getElementById( 'user_login' );
-	var pass = document.getElementById( 'user_pass' );
-	if ( user && pass && document.getElementById( 'loginform' ) ) {
-		if ( texts.user && ! user.placeholder ) {
-			user.placeholder = texts.user;
-		}
-		if ( texts.pass && ! pass.placeholder ) {
-			pass.placeholder = texts.pass;
-		}
+	if ( ! card ) {
+		return;
 	}
+	var notices = card.querySelectorAll( ':scope > .message, :scope > .notice, :scope > #login_error' );
+	Array.prototype.forEach.call( notices, function ( notice ) {
+		if ( notice.hasAttribute( 'role' ) || notice.hasAttribute( 'aria-live' ) ) {
+			return;
+		}
+		var error = 'login_error' === notice.id || notice.classList.contains( 'notice-error' );
+		notice.setAttribute( 'role', error ? 'alert' : 'status' );
+		notice.setAttribute( 'aria-live', error ? 'assertive' : 'polite' );
+	} );
 }() );

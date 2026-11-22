@@ -83,6 +83,27 @@ final class StyleTest extends TestCase {
 		$this->assertStringContainsString( '--mgl-bg-image:url("https://example.com/bg.jpg");', $css );
 	}
 
+	public function test_the_mgraphics_photo_layout(): void {
+		// As on mgraphics.com.pl: a photo from the media library, the light shading, the card on the left.
+		$s                  = Settings::defaults();
+		$s['bg_type']       = 'custom';
+		$s['bg_image_id']   = 7;
+		$s['bg_overlay']    = true;
+		$s['card_position'] = 'left';
+		$css                = Style::inline_css( $s, $this->context( array( 'bg_url' => 'https://example.com/wp-content/uploads/login-bg.jpg' ) ) );
+		$this->assertStringContainsString( '--mgl-bg-image:url("https://example.com/wp-content/uploads/login-bg.jpg");', $css );
+		$this->assertStringContainsString( '--mgl-shade:var(--mgl-shade-design);', $css );
+		$this->assertStringContainsString( '--mgl-card-align:flex-start;', $css );
+		$this->assertStringContainsString( '--mgl-logo-w:306px;', $css );
+		$this->assertStringContainsString( '--mgl-bg-color:#ece8e3;', $css );
+	}
+
+	public function test_shading_can_be_switched_off(): void {
+		$s               = Settings::defaults();
+		$s['bg_overlay'] = false;
+		$this->assertStringContainsString( '--mgl-shade:none;', Style::inline_css( $s, $this->context() ) );
+	}
+
 	public function test_custom_css_is_appended(): void {
 		$s               = Settings::defaults();
 		$s['custom_css'] = 'body.login #login{border-radius:0}';

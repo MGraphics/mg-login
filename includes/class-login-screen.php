@@ -1,7 +1,7 @@
 <?php
 /**
- * The login screen: stylesheet, logo link, "forgot password" link inside the form, placeholders
- * and the language switcher moved under the form.
+ * The login screen: stylesheet, logo link, "forgot password" link inside the form, notices
+ * announced to screen readers and the language switcher moved under the form.
  *
  * Every hook here belongs to the login screen (wp-login.php, also when another plugin serves it
  * at a private address), so nothing is printed on the public pages. Sign-in, password reset,
@@ -28,12 +28,13 @@ final class Login_Screen {
 		add_filter( 'login_headertext', array( $this, 'logo_title' ), 20 );
 		add_filter( 'login_body_class', array( $this, 'body_class' ) );
 		add_action( 'login_form', array( $this, 'lost_password_link' ) );
+		add_action( 'login_init', array( $this, 'announce_notices' ) );
 		add_filter( 'login_display_language_dropdown', array( $this, 'language_dropdown' ), 20 );
 	}
 
 	/**
 	 * Stylesheet, the site's settings as CSS custom properties, and the small script that moves
-	 * the language switcher into the card and adds the field placeholders.
+	 * the language switcher into the card.
 	 */
 	public function enqueue(): void {
 		$s = Settings::all();
@@ -42,14 +43,6 @@ final class Login_Screen {
 		wp_add_inline_style( 'mg-login', Style::inline_css( $s, $this->context( $s ) ) );
 
 		wp_enqueue_script( 'mg-login', MG_LOGIN_URL . 'assets/js/login.js', array(), MG_LOGIN_VERSION, true );
-		wp_localize_script(
-			'mg-login',
-			'mgLogin',
-			array(
-				'user' => __( 'Username or email', 'mg-login' ),
-				'pass' => __( 'Password', 'mg-login' ),
-			)
-		);
 	}
 
 	/**
@@ -144,6 +137,38 @@ final class Login_Screen {
 			esc_url( wp_lostpassword_url() ),
 			esc_html__( 'Forgot your password?', 'mg-login' )
 		);
+	}
+
+	/**
+	 * From here on (the login screen only) WordPress' notices carry a live-region role.
+	 */
+	public function announce_notices(): void {
+		add_filter( 'wp_admin_notice_args', array( $this, 'notice_args' ) );
+	}
+
+	/**
+	 * The two notices WordPress prints above the login forms: errors (#login_error) become
+	 * alerts, messages (#login-message: logged out, instructions, confirmations) polite status
+	 * messages. Notices nested inside them and attributes set by others are left alone.
+	 *
+	 * @param mixed $args Arguments of wp_admin_notice().
+	 * @return mixed
+	 */
+	public function notice_args( $args ) {
+		if ( ! is_array( $args ) ) {
+			return $args;
+		}
+		$id = isset( $args['id'] ) ? (string) $args['id'] : '';
+		if ( 'login_error' !== $id && 'login-message' !== $id ) {
+			return $args;
+		}
+		$attributes         = ( isset( $args['attributes'] ) && is_array( $args['attributes'] ) ) ? $args['attributes'] : array();
+		$error              = 'login_error' === $id;
+		$args['attributes'] = $attributes + array(
+			'role'      => $error ? 'alert' : 'status',
+			'aria-live' => $error ? 'assertive' : 'polite',
+		);
+		return $args;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 <?php
 /**
- * Unit tests: settings and the generated CSS, with a few WordPress functions stubbed.
+ * Unit tests: settings, the generated CSS, the login screen's notices and the stylesheet, with a few
+ * WordPress functions stubbed.
  *
  * @package MG_Login
  */
@@ -36,5 +37,17 @@ function wp_strip_all_tags( $text ) {
 	return strip_tags( $text );
 }
 
+$GLOBALS['mgl_hooks'] = array();
+
+function add_action( $hook, $callback, $priority = 10, $args = 1 ) {
+	$GLOBALS['mgl_hooks'][] = $hook;
+	return true;
+}
+function add_filter( $hook, $callback, $priority = 10, $args = 1 ) {
+	$GLOBALS['mgl_hooks'][] = $hook;
+	return true;
+}
+
 require dirname( __DIR__, 2 ) . '/includes/class-settings.php';
 require dirname( __DIR__, 2 ) . '/includes/class-style.php';
+require dirname( __DIR__, 2 ) . '/includes/class-login-screen.php';

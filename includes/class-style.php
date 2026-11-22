@@ -55,7 +55,7 @@ final class Style {
 			'--mgl-logo-h-sm'        => (int) round( $phone * $ratio ) . 'px',
 			'--mgl-heading'          => self::string( (string) $context['heading'] ),
 			'--mgl-card-align'       => self::align( (string) $s['card_position'] ),
-			'--mgl-overlay'          => $s['bg_overlay'] ? 'block' : 'none',
+			'--mgl-shade'            => $s['bg_overlay'] ? 'var(--mgl-shade-design)' : 'none',
 		);
 
 		$css = 'body.login.mgl-login{';

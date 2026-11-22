@@ -81,8 +81,6 @@ PL = {
     "Restore the defaults": "Przywróć ustawienia domyślne",
     "Choose image": "Wybierz obraz",
     "Remove": "Usuń",
-    "Username or email": "Nazwa użytkownika lub e-mail",
-    "Password": "Hasło",
     "Forgot your password?": "Zapomniałeś hasła?",
 }
 
@@ -98,11 +96,11 @@ def main() -> int:
         '# This file is distributed under the GPL-2.0-or-later.',
         'msgid ""',
         'msgstr ""',
-        '"Project-Id-Version: MG Login 1.0.0\\n"',
+        '"Project-Id-Version: MG Login 1.0.2\\n"',
         '"Report-Msgid-Bugs-To: https://github.com/MGraphics/mg-login/issues\\n"',
         '"Last-Translator: MGraphics\\n"',
         '"Language-Team: MGraphics\\n"',
-        '"PO-Revision-Date: 2026-11-21 22:00+0100\\n"',
+        '"PO-Revision-Date: 2026-11-22 18:30+0100\\n"',
         '"Language: pl_PL\\n"',
         '"MIME-Version: 1.0\\n"',
         '"Content-Type: text/plain; charset=UTF-8\\n"',
