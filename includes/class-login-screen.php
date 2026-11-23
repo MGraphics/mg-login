@@ -58,8 +58,7 @@ final class Login_Screen {
 			'logo_w'    => Style::DEFAULT_LOGO_W,
 			'logo_h'    => Style::DEFAULT_LOGO_H,
 			'bg_url'    => '',
-			// The default background is drawn in CSS (no bundled photo).
-			'bg_design' => false,
+			'bg_webp'   => '',
 		);
 
 		if ( 'default' === $s['logo_type'] ) {
@@ -75,15 +74,16 @@ final class Login_Screen {
 			}
 		}
 
-		if ( 'default' === $s['bg_type'] ) {
-			$context['bg_design'] = true;
-		} elseif ( 'custom' === $s['bg_type'] && $s['bg_image_id'] ) {
+		if ( 'custom' === $s['bg_type'] && $s['bg_image_id'] ) {
 			$image = wp_get_attachment_image_src( (int) $s['bg_image_id'], 'full' );
 			if ( $image ) {
 				$context['bg_url'] = (string) $image[0];
-			} else {
-				$context['bg_design'] = true;
 			}
+		}
+		// The MGraphics photo: the default, and the fallback for a deleted media library image.
+		if ( 'none' !== $s['bg_type'] && '' === $context['bg_url'] ) {
+			$context['bg_url']  = MG_LOGIN_URL . 'assets/images/login-bg.jpg';
+			$context['bg_webp'] = MG_LOGIN_URL . 'assets/images/login-bg.webp';
 		}
 		return $context;
 	}

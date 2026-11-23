@@ -73,14 +73,30 @@ final class StyleTest extends TestCase {
 		$this->assertStringContainsString( '--mgl-logo-image:none;', $css );
 	}
 
-	public function test_default_background_is_the_css_design(): void {
-		$css = Style::inline_css( Settings::defaults(), $this->context( array( 'bg_url' => '', 'bg_design' => true ) ) );
-		$this->assertStringContainsString( '--mgl-bg-image:var(--mgl-bg-design);', $css );
+	public function test_default_background_is_the_mgraphics_photo_with_a_webp_version(): void {
+		$css = Style::inline_css(
+			Settings::defaults(),
+			$this->context(
+				array(
+					'bg_url'  => 'https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.jpg',
+					'bg_webp' => 'https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.webp',
+				)
+			)
+		);
+		$this->assertStringContainsString( '--mgl-bg-image:url("https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.jpg");', $css );
+		$this->assertStringContainsString( '--mgl-bg-image-set:image-set(url("https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.webp") type("image/webp"), url("https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.jpg") type("image/jpeg"));', $css );
+		$this->assertStringContainsString( '--mgl-shade:var(--mgl-shade-design);', $css );
 	}
 
-	public function test_an_image_wins_over_the_design(): void {
-		$css = Style::inline_css( Settings::defaults(), $this->context( array( 'bg_design' => true ) ) );
+	public function test_an_image_without_webp_is_used_as_is(): void {
+		$css = Style::inline_css( Settings::defaults(), $this->context() );
 		$this->assertStringContainsString( '--mgl-bg-image:url("https://example.com/bg.jpg");', $css );
+		$this->assertStringContainsString( '--mgl-bg-image-set:url("https://example.com/bg.jpg");', $css );
+	}
+
+	public function test_colour_only_has_no_image_set(): void {
+		$css = Style::inline_css( Settings::defaults(), $this->context( array( 'bg_url' => '', 'bg_webp' => 'https://example.com/a.webp' ) ) );
+		$this->assertStringContainsString( '--mgl-bg-image-set:none;', $css );
 	}
 
 	public function test_the_mgraphics_photo_layout(): void {

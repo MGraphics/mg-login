@@ -1,14 +1,54 @@
 <?php
 /**
- * Login screen: the live-region roles of WordPress' notices.
+ * Login screen: the background it resolves and the live-region roles of WordPress' notices.
  *
  * @package MG_Login
  */
 
 use MG_Login\Login_Screen;
+use MG_Login\Settings;
 use PHPUnit\Framework\TestCase;
 
 final class LoginScreenTest extends TestCase {
+
+	private function background( array $settings ): array {
+		$context = ( new Login_Screen() )->context( array_merge( Settings::defaults(), $settings ) );
+		return array( $context['bg_url'], $context['bg_webp'] );
+	}
+
+	public function test_a_fresh_install_shows_the_bundled_mgraphics_photo(): void {
+		$this->assertSame(
+			array(
+				'https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.jpg',
+				'https://example.com/wp-content/plugins/mg-login/assets/images/login-bg.webp',
+			),
+			$this->background( array() )
+		);
+	}
+
+	public function test_a_media_library_image_is_kept(): void {
+		$this->assertSame(
+			array( 'https://example.com/wp-content/uploads/image-7.jpg', '' ),
+			$this->background( array( 'bg_type' => 'custom', 'bg_image_id' => 7 ) )
+		);
+	}
+
+	public function test_a_deleted_media_library_image_falls_back_to_the_photo(): void {
+		list( $url ) = $this->background( array( 'bg_type' => 'custom', 'bg_image_id' => 99 ) );
+		$this->assertStringEndsWith( '/assets/images/login-bg.jpg', $url );
+	}
+
+	public function test_colour_only_has_no_image(): void {
+		$this->assertSame( array( '', '' ), $this->background( array( 'bg_type' => 'none' ) ) );
+	}
+
+	public function test_the_bundled_photo_files_exist(): void {
+		$dir = dirname( __DIR__, 2 ) . '/assets/images/';
+		$this->assertFileExists( $dir . 'login-bg.jpg' );
+		$this->assertFileExists( $dir . 'login-bg.webp' );
+		$this->assertLessThan( 250 * 1024, filesize( $dir . 'login-bg.jpg' ) );
+		$this->assertLessThan( 150 * 1024, filesize( $dir . 'login-bg.webp' ) );
+	}
 
 	public function test_errors_are_alerts(): void {
 		$args = ( new Login_Screen() )->notice_args(

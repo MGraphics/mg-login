@@ -235,7 +235,7 @@ final class Admin {
 						<td>
 							<fieldset class="mg-login-choice" data-target="bg">
 								<?php
-								$this->radio( $name . '[bg_type]', 'default', $s['bg_type'], __( 'MGraphics design (default)', 'mg-login' ) );
+								$this->radio( $name . '[bg_type]', 'default', $s['bg_type'], __( 'MGraphics photo (default)', 'mg-login' ) );
 								$this->radio( $name . '[bg_type]', 'custom', $s['bg_type'], __( 'Image from the media library', 'mg-login' ) );
 								$this->radio( $name . '[bg_type]', 'none', $s['bg_type'], __( 'No image, colour only', 'mg-login' ) );
 								?>

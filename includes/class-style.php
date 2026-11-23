@@ -31,7 +31,7 @@ final class Style {
 	 * @param array<string, mixed> $s       Settings (Settings::all()).
 	 * @param array<string, mixed> $context Resolved values: heading (string), logo_url (string),
 	 *                                      logo_w / logo_h (int, natural size), bg_url (string),
-	 *                                      bg_design (bool, the CSS background when there is no image).
+	 *                                      bg_webp (string, a WebP version of bg_url, optional).
 	 * @return string
 	 */
 	public static function inline_css( array $s, array $context ): string {
@@ -48,6 +48,7 @@ final class Style {
 			'--mgl-accent-shadow-hi' => self::rgba( $s['accent'], 0.38 ),
 			'--mgl-bg-color'         => $s['bg_color'],
 			'--mgl-bg-image'         => self::background( $context ),
+			'--mgl-bg-image-set'     => self::background_set( $context ),
 			'--mgl-logo-image'       => '' !== $context['logo_url'] ? self::url( $context['logo_url'] ) : 'none',
 			'--mgl-logo-w'           => $width . 'px',
 			'--mgl-logo-h'           => $height . 'px',
@@ -71,17 +72,31 @@ final class Style {
 	}
 
 	/**
-	 * The background-image value: the chosen image, the MGraphics design drawn in login.css, or
-	 * none (colour only).
+	 * The background-image value: the image (the MGraphics photo or one from the media library),
+	 * or none (colour only).
 	 *
 	 * @param array<string, mixed> $context Resolved values.
 	 * @return string
 	 */
 	public static function background( array $context ): string {
-		if ( '' !== (string) ( $context['bg_url'] ?? '' ) ) {
-			return self::url( (string) $context['bg_url'] );
+		$url = (string) ( $context['bg_url'] ?? '' );
+		return '' !== $url ? self::url( $url ) : 'none';
+	}
+
+	/**
+	 * The same background for browsers with image-set() and type(): the WebP version first, the
+	 * image itself as the fallback. Without a WebP version it equals background().
+	 *
+	 * @param array<string, mixed> $context Resolved values.
+	 * @return string
+	 */
+	public static function background_set( array $context ): string {
+		$image = self::background( $context );
+		$webp  = self::url( (string) ( $context['bg_webp'] ?? '' ) );
+		if ( 'none' === $image || 'none' === $webp ) {
+			return $image;
 		}
-		return empty( $context['bg_design'] ) ? 'none' : 'var(--mgl-bg-design)';
+		return 'image-set(' . $webp . ' type("image/webp"), ' . $image . ' type("image/jpeg"))';
 	}
 
 	/**

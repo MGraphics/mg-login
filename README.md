@@ -1,6 +1,6 @@
 # MG Login
 
-WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a soft full-screen background (a CSS design by default, or any photo from the media library), the logo above it, plain fields with their labels above them, messages as plain text set off by a thin line, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults give the MGraphics look; every part can be changed for a client site.
+WordPress plugin by [MGraphics](https://mgraphics.com.pl) for a branded login screen: a white card on a full-screen photo (the bundled MGraphics photo by default, or any image from the media library), the logo above it, plain fields with their labels above them, messages as plain text set off by a thin line, "Forgot your password?" under the password, a solid accent button, and the WordPress language switcher moved into the card directly under the form. The defaults give the MGraphics look; every part can be changed for a client site.
 
 Polski opis, FAQ i lista zmian: [readme.txt](readme.txt). The plugin is fully translated into Polish.
 
@@ -23,14 +23,14 @@ Download `mg-login-<version>.zip` from the latest release at https://github.com/
 | Card position on large screens: left / centre / right | left |
 | Language switcher under the form | on |
 | Accent / accent on hover | `#2563eb` / `#1d4ed8` |
-| Background: MGraphics design (CSS, no image) / media library image / colour only | MGraphics design |
+| Background: MGraphics (the bundled photo) / media library image / colour only | MGraphics |
 | Background colour | `#ece8e3` |
 | Light shading towards the right | on |
 | Additional CSS (login screen only) | – |
 
 "Restore the defaults" at the bottom of the page deletes the stored settings.
 
-The MGraphics layout with a photo (as on mgraphics.com.pl): **Background → Image from the media library** (upload the photo there; it is not part of the plugin), **Light shading** on, **Card position → left**, logo above the card.
+The defaults are the MGraphics layout as on mgraphics.com.pl: the bundled photo, **Light shading** on, **Card position → left**, logo above the card.
 
 ## How it works
 
@@ -39,7 +39,7 @@ The MGraphics layout with a photo (as on mgraphics.com.pl): **Background → Ima
 - Fields have their WordPress labels above them and nothing inside (no icons, no placeholders), on every screen. Messages are plain text with a thin line under them; `wp_admin_notice_args` (added on `login_init`, so on the login screen only) gives WordPress' two notices a live-region role: `#login_error` is `role="alert"`, `#login-message` is `role="status"`.
 - `assets/js/login.js` is printed in the login footer right after WordPress' language switcher and moves it into the card before the first paint (and gives the same roles to notices printed by other plugins in the old markup). Without JavaScript the switcher stays in a white box under the card.
 - The "Forgot your password?" link uses `wp_lostpassword_url()`, so it follows a private login address set by MG Stealth or WPS Hide Login.
-- No external requests: Open Sans (latin + latin-ext, variable woff2) and the default logo are bundled; the default background is pure CSS (`--mgl-bg-design` in `login.css`).
+- No external requests: Open Sans (latin + latin-ext, variable woff2) and the default logo and background photo are bundled. The photo is `assets/images/login-bg.webp` (offered through `image-set()`) with `login-bg.jpg` as the fallback; both belong to MGraphics and ship under the plugin's licence.
 
 ## Updates (GitHub Releases)
 

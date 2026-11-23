@@ -4,7 +4,7 @@ Tags: login, custom login, login page, branding, login logo
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,34 +12,33 @@ A branded login screen: your logo, colours and background on a clean card, with 
 
 == Description ==
 
-MG Login gives the WordPress login screen a clean, branded look: a white card on a soft full-screen background, the logo above it, plain fields with their labels above them, a "Forgot your password?" link under the password, a solid accent button and the language switcher moved from the bottom of the page into the card, directly under the form. Messages (logged out, errors, instructions, confirmations) are plain text set off from the form by a thin line, and are announced to screen readers.
+MG Login gives the WordPress login screen a clean, branded look: a white card on a full-screen photo (the MGraphics photo by default), the logo above it, plain fields with their labels above them, a "Forgot your password?" link under the password, a solid accent button and the language switcher moved from the bottom of the page into the card, directly under the form. Messages (logged out, errors, instructions, confirmations) are plain text set off from the form by a thin line, and are announced to screen readers.
 
 Out of the box it shows the MGraphics look. For a client site change, in **Settings → MG Login**:
 
 * the logo (from the media library, or none), its width, link and title;
 * the heading above the form;
 * the accent colour and its hover shade;
-* the background: the MGraphics design (pure CSS, the default), any image from the media library, or a plain colour; the background colour and the light shading;
+* the background: the MGraphics photo (bundled, the default), any image from the media library, or a plain colour; the background colour and the light shading;
 * the card position on large screens (left, centre or right);
 * whether to show the language switcher;
 * additional CSS for the login screen only.
 
 Every screen of the login page is styled: log in, lost password, new password, registration, "check your e-mail" confirmations, errors and notices, the administration e-mail check, on desktops and phones.
 
-The MGraphics layout with a photo is three settings: Background → Image from the media library (the photo), Shading on, Card position → Left.
-
 **Only the look changes.** Signing in, password reset, registration, redirects, messages and e-mails are WordPress' own. The plugin works on the login screen wherever it is: `wp-login.php`, or a private address set by MG Stealth or WPS Hide Login.
 
-**Nothing on the public pages.** The plugin prints nothing, adds no styles or scripts and sends no headers on the front end of the site. It makes no external requests: the font (Open Sans) and the logo are bundled, and the default background is drawn in CSS.
+**Nothing on the public pages.** The plugin prints nothing, adds no styles or scripts and sends no headers on the front end of the site. It makes no external requests: the font (Open Sans), the logo and the background photo are bundled.
 
 = Credits =
 
 * Open Sans by The Open Sans Project Authors, SIL Open Font License 1.1 (assets/fonts/OFL.txt).
+* The MGraphics logo and the background photo (assets/images/) belong to MGraphics, which distributes them with the plugin under the plugin's licence (GPL-2.0-or-later).
 * plugin-update-checker by Yahnis Elsts, MIT License (GitHub build only).
 
 = Po polsku =
 
-MG Login nadaje ekranowi logowania WordPressa firmowy wygląd: biała karta na delikatnym tle (domyślnie wzór CSS albo dowolne zdjęcie z biblioteki mediów), logo nad kartą, proste pola z etykietami nad nimi, komunikaty jako zwykły tekst oddzielony cienką linią (bez ramek i kolorowych pasków), link „Zapomniałeś hasła?” pod hasłem, wyraźny przycisk w kolorze akcentu oraz wybór języka przeniesiony z dołu strony do karty, bezpośrednio pod formularz. Domyślnie wygląda jak logowanie MGraphics; w **Ustawienia → MG Login** można dla klienta zmienić logo (z biblioteki mediów), jego szerokość, link i tytuł, nagłówek, kolory akcentu, obraz lub kolor tła, przyciemnienie, położenie karty, wybór języka i dodać własny CSS. Zmienia się tylko wygląd – logowanie, resetowanie hasła, rejestracja i e-maile pozostają w rękach WordPressa. Działa razem z MG Stealth i WPS Hide Login. Na publicznych stronach nic nie dodaje; z zewnętrznym serwerem łączy się tylko wersja z GitHuba, sprawdzając aktualizacje. Wtyczka jest w pełni przetłumaczona na polski.
+MG Login nadaje ekranowi logowania WordPressa firmowy wygląd: biała karta na zdjęciu na cały ekran (domyślnie zdjęcie MGraphics dołączone do wtyczki albo dowolne zdjęcie z biblioteki mediów), logo nad kartą, proste pola z etykietami nad nimi, komunikaty jako zwykły tekst oddzielony cienką linią (bez ramek i kolorowych pasków), link „Zapomniałeś hasła?” pod hasłem, wyraźny przycisk w kolorze akcentu oraz wybór języka przeniesiony z dołu strony do karty, bezpośrednio pod formularz. Domyślnie wygląda jak logowanie MGraphics; w **Ustawienia → MG Login** można dla klienta zmienić logo (z biblioteki mediów), jego szerokość, link i tytuł, nagłówek, kolory akcentu, obraz lub kolor tła, przyciemnienie, położenie karty, wybór języka i dodać własny CSS. Zmienia się tylko wygląd – logowanie, resetowanie hasła, rejestracja i e-maile pozostają w rękach WordPressa. Działa razem z MG Stealth i WPS Hide Login. Na publicznych stronach nic nie dodaje; z zewnętrznym serwerem łączy się tylko wersja z GitHuba, sprawdzając aktualizacje. Wtyczka jest w pełni przetłumaczona na polski.
 
 == Installation ==
 
@@ -78,6 +77,11 @@ No. The GitHub build looks for new versions in the Releases of the public reposi
 
 == Changelog ==
 
+= 1.0.3 =
+* The default background is the MGraphics photo again, bundled with the plugin (WebP, 90 KB, with a JPG fallback) and with the same light shading as on mgraphics.com.pl. A fresh install shows the MGraphics login screen with no configuration.
+* The background choices are: MGraphics (default, the photo), an image from the media library, or the colour only. The CSS-drawn design is gone.
+* Sites on the default background get the photo; sites that chose an image from the media library or the colour only keep it. If a chosen image is deleted from the media library, the MGraphics photo is shown.
+
 = 1.0.2 =
 * Fields: no icons and no placeholders inside the fields. Every field has its label above it and a plain outlined box, the same on all screens (log in, lost password, new password, registration). Only WordPress' show-password button stays in the password field.
 * Messages (logged out, errors, lost and new password, registration, "check your e-mail"): plain text set off from the form by a thin line, instead of a tinted box with a coloured bar on the left. Errors are dark red with a red line. Text contrast is at least 6.5:1, field borders 3.5:1.
@@ -99,6 +103,9 @@ No. The GitHub build looks for new versions in the Releases of the public reposi
 * First release: branded login, lost-password, reset, registration and message screens; language switcher under the form; settings for logo, link, title, heading, colours, background, card position, language switcher and custom CSS; bundled Open Sans font; Polish translation.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+The default background is the MGraphics photo again. A background chosen from the media library stays as it is.
 
 = 1.0.2 =
 Cleaner fields (labels above, no icons) and calmer messages (plain text, no coloured bars). Settings stay as they are.
